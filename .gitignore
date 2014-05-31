@@ -7,6 +7,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+*/
 env/
 bin/
 build/
@@ -52,3 +53,8 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# Media files
+*.MTS
+*.mts
+*.MP4
+*.mp4
