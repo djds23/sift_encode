@@ -22,10 +22,10 @@ def watch(root):
 def crawl_folder(paths):
     '''crawl filesystem and apply encoding function'''
     root, dirs, files = paths
-    for filename in files:
+    for filename in files: #search the folder for a file with .mts extension
         if '.MTS' in filename:
             try: 
-                os.mkdir(root + '/streamers')
+                os.mkdir(root + '/streamers') #create streaming folder in filesystem
             except OSError:
                 pass
             finally:
