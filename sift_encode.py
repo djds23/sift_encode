@@ -29,7 +29,7 @@ def crawl_folder(paths):
         except OSError:
             return 'Files are already encoded or encoding, do not proceed.'
         else:
-            filepaths = [[os.path.join(root, contents), os.path.join(new_files,contents)]for contents in files]
+            filepaths = [[os.path.join(root, contents), os.path.join(new_files,contents)] for contents in files]
             map(encode, filepaths) #filepaths contains both using original file name, but one pointing to streamers
                                    #second contents will be altered in the encode function
 
