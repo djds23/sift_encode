@@ -13,7 +13,7 @@ def watch(root):
         removed = [paths for paths in before if paths not in after]
         for paths in added:
             if 'streamers' in paths[0]:
-                print 'streaming directory, ignoring...' 
+                print paths[0], ': Is a streaming directory' 
             else:
                 crawl_folder(paths)
         before = after
@@ -27,8 +27,8 @@ def crawl_folder(paths):
             new_files= os.path.join(root, 'streamers')
             os.mkdir(new_files) 
         except OSError:
-            pass
-        finally:
+            return 'Files are already encoded or encoding, do not proceed.'
+        else:
             filepaths = [os.path.join(root, contents) for contents in files]
             map(encode, filepaths) 
 
