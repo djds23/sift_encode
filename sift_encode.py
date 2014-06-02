@@ -29,13 +29,14 @@ def crawl_folder(paths):
         except OSError:
             return 'Files are already encoded or encoding, do not proceed.'
         else:
-            filepaths = [os.path.join(root, contents) for contents in files]
-            map(encode, filepaths) 
+            filepaths = [[os.path.join(root, contents), os.path.join(new_files,contents)]for contents in files]
+            map(encode, filepaths) #filepaths contains both using original file name, but one pointing to streamers
+                                   #second contents will be altered in the encode function
 
 def encode(contents):
-        if contents.lower().endswith('.mts'): #check to see if MPEG transit stream
-            new_name = contents[:-4]+'_streamer.mp4'
-            command = "ffmpeg -v verbose -i "+ contents +" -acodec copy -vf 'field, scale=iw/2:ih, setsar=1' -vcodec libx264 -g 60 -crf 30 -threads 8 -preset slow -y streamers/" + new_name 
+        if contents[0].lower().endswith('.mts'): #check to see if MPEG transit stream
+            new_name = contents[1][:-4]+'_streamer.mp4'
+            command = "ffmpeg -v verbose -i "+ contents[0] +" -acodec copy -vf 'field, scale=iw/2:ih, setsar=1' -vcodec libx264 -g 60 -crf 30 -threads 8 -preset slow -y " + new_name 
             call(command, shell=True) #call ffmpeg and place new file in new dict
         #Beware files only play in VLC
 
