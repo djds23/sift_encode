@@ -4,6 +4,7 @@ import subprocess
 
 root = "."
 
+
 def watch(root):
     '''watching the current directory'''
     before = [paths for paths in os.walk('.')] 
