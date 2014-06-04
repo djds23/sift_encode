@@ -1,8 +1,10 @@
 import sift_encode
-import shutil
+
 import os
 import time
+import shutil
 import subprocess
+import multiprocessing
 
 def test_encode(monkeypatch):
     def mock_call(command, shell):
@@ -25,13 +27,26 @@ def test_crawl_folder(monkeypatch, tmpdir):
     assert os.path.isdir(new_files)
 
 def test_watch(monkeypatch, tmpdir):
+    create_processes(run_watch,move_cards)
+
+def create_processes(*args):
+    for _ in args:
+        process = multiprocessing.Process(args=[_])
+        process.daemon=True
+        process.start()
+
+def run_watch(tmpdir):
     def mock_crawl_folder():
         pass
     monkeypatch.setattr(sift_encode, 'crawl_folder', mock_crawl_folder)
     sift_encode.watch(str(tmpdir))
+    
+def move_cards(tmpdir):
     test_card_dir = os.path.join(str(tmpdir),'test_card')
     shutil.copytree('test_card', test_card_dir)
     time.sleep(15)
     shutil.copytree('test_card_A', test_card_dir)
     time.sleep(15)
     shutil.copytree('test_card_B', test_card_dir)
+    exit()
+ 
