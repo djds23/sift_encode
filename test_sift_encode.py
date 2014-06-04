@@ -47,6 +47,4 @@ def move_cards(tmpdir):
     time.sleep(15)
     shutil.copytree('test_card_A', test_card_dir)
     time.sleep(15)
-    shutil.copytree('test_card_B', test_card_dir)
-    exit()
  
