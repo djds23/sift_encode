@@ -1,6 +1,6 @@
 import os
 import time
-from subprocess import call
+import subprocess
 
 root = "."
 
@@ -21,15 +21,15 @@ def watch(root):
 
 def crawl_folder(paths):
     '''crawl filesystem and apply encoding function'''
-    root, dirs, files = paths
+    found_path, dirs, files = paths
     if any('.mts' in contents.lower() for contents in files):
         try:
-            new_files= os.path.join(root, 'streamers')
+            new_files= os.path.join(found_path, 'streamers')
             os.mkdir(new_files) 
         except OSError:
             return 'Files are already encoded or encoding, do not proceed.'
         else:
-            filepaths = [[os.path.join(root, contents), os.path.join(new_files,contents)] for contents in files]
+            filepaths = [[os.path.join(found_path, contents), os.path.join(new_files,contents)] for contents in files]
             map(encode, filepaths) #filepaths contains both using original file name, but one pointing to streamers
                                    #second contents will be altered in the encode function
 
@@ -37,7 +37,8 @@ def encode(contents):
         if contents[0].lower().endswith('.mts'): #check to see if MPEG transit stream
             new_name = contents[1][:-4]+'_streamer.mp4'
             command = "ffmpeg -v verbose -i "+ contents[0] +" -acodec copy -vf 'field, scale=iw/2:ih, setsar=1' -vcodec libx264 -g 60 -crf 30 -threads 8 -preset slow -y " + new_name 
-            call(command, shell=True) #call ffmpeg and place new file in new dict
+            print command
+            subprocess.call(command, shell=True) #call ffmpeg and place new file in new dict
         #Beware files only play in VLC
 
 if __name__=='__main__':
