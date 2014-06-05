@@ -2,7 +2,8 @@ import os
 import time
 import subprocess
 
-from encoder import encode
+from encoder import pass_array
+
 root = "."
 
 
@@ -32,7 +33,7 @@ def crawl_folder(paths):
             return 'Files are already encoded or encoding, do not proceed.'
         else:
             filepaths = [[os.path.join(found_path, contents), os.path.join(new_files,contents)] for contents in files]
-            encode(filepaths) #filepaths contains both using original file name, but one pointing to streamers
+            pass_array(filepaths) #filepaths contains both using original file name, but one pointing to streamers
                                    #second contents will be altered in the encode function
 
 def encode_nothing(contents): #NAME CHANGED FOR DELETION, ENCODING TAKES PLACE IN encoder.py CURRENTLY!
