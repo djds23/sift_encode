@@ -33,15 +33,8 @@ def crawl_folder(paths):
             return 'Files are already encoded or encoding, do not proceed.'
         else:
             filepaths = [[os.path.join(found_path, contents), os.path.join(new_files,contents)] for contents in files]
-            encoder.pass_array(filepaths) #filepaths contains both using original file name, but one pointing to streamers
+            encoder.run_pool(filepaths)
                                    #second contents will be altered in the encode function
-
-def encode_nothing(contents): #NAME CHANGED FOR DELETION, ENCODING TAKES PLACE IN encoder.py CURRENTLY!
-        if contents[0].lower().endswith('.mts'): #check to see if MPEG transit stream
-            new_name = contents[1][:-4]+'_streamer.mp4'
-            command = "ffmpeg -v verbose -i "+ contents[0] +" -acodec copy -vf 'field, scale=iw/2:ih, setsar=1' -vcodec libx264 -g 60 -crf 30 -threads 8 -preset slow -y " + new_name 
-            subprocess.call(command, shell=True) #call ffmpeg and place new file in new dict
-        #Beware files only play in VLC
 
 if __name__=='__main__':
     watch(root)

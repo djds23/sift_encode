@@ -20,16 +20,16 @@ def make_folders(tmpdir):
 
 def test_crawl_folder(monkeypatch, tmpdir):
     test_card_walk, new_files, filepaths = make_folders(tmpdir)
-    def mock_encode(contents):
+    def mock_run_pool(contents):
         assert contents == filepaths 
-    monkeypatch.setattr(sift_encode, 'pass_array', mock_encode)
+    monkeypatch.setattr(encoder, 'run_pool', mock_run_pool)
     sift_encode.crawl_folder(test_card_walk)
     assert os.path.isdir(new_files)
 
-def test_pass_array(monkeypatch, tmpdir):
+def test_run_pool(monkeypatch, tmpdir):
     test_card_walk, new_files, filepaths = make_folders(tmpdir)
-    test_filepaths = encoder.pass_array(filepaths)
-    assert test_filepaths == filepaths
+    test_filepaths = encoder.run_pool(filepaths)
+
 
 def test_encode(monkeypatch, tmpdir):
     test_card_walk, new_files, filepaths = make_folders(tmpdir)
