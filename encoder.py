@@ -10,5 +10,4 @@ def encode(contents):
 def run_pool(filepaths):
     pool = multiprocessing.Pool(processes=4)
     result = pool.map_async(encode, filepaths)
-    print result.get()
 
