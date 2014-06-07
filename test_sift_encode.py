@@ -3,6 +3,7 @@ import sift_encode
 import os
 import time
 import shutil
+import datetime
 import subprocess
 import multiprocessing
 
@@ -31,25 +32,22 @@ def test_crawl_folder(monkeypatch, tmpdir):
     assert os.path.isdir(new_files)
 
 def test_watch(monkeypatch, tmpdir):
-    #create_processes(run_watch,move_cards)
-    pass
+    pool = multiprocessing.Pool(processes=2)
+    #pool.apply_async(move_cards(tmpdir, monkeypatch))
+    pool.apply_async(run_watch(tmpdir, monkeypatch))  
 
-def create_processes(*args):
-    for _ in args:
-        process = multiprocessing.Process(args=[_])
-        process.daemon=True
-        process.start()
-
-def run_watch(tmpdir):
+def run_watch(tmpdir, monkeypatch):
     def mock_crawl_folder():
-        pass
+        assert 0
     monkeypatch.setattr(sift_encode, 'crawl_folder', mock_crawl_folder)
     sift_encode.watch(str(tmpdir))
     
-def move_cards(tmpdir):
-    test_card_dir = os.path.join(str(tmpdir),'test_card')
+def move_cards(tmpdir, monkeypatch):
+    time.sleep(15)
+    test_card_dir = os.path.join(str(tmpdir),'test_card' + str(datetime.datetime.now()))
     shutil.copytree('test_card', test_card_dir)
     time.sleep(15)
+    test_card_dir = os.path.join(str(tmpdir),'test_card' + str(datetime.datetime.now()))
     shutil.copytree('test_card_A', test_card_dir)
     time.sleep(15)
- 
+    assert 0
