@@ -8,7 +8,7 @@ import subprocess
 import multiprocessing
 
 def make_folders(tmpdir):
-    test_card_dir = os.path.join(str(tmpdir),'test_card')
+    test_card_dir = os.path.join(str(tmpdir),'test_card'+str(datetime.datetime.now()))
     shutil.copytree('test_card',test_card_dir) 
     mts_dir = os.path.join(test_card_dir, 'PRIVATE/a/a')
     test_card_walk = os.walk(mts_dir).next()
@@ -32,32 +32,6 @@ def test_crawl_folder(monkeypatch, tmpdir):
     assert os.path.isdir(new_files)
 
 def test_watch(monkeypatch, tmpdir):
-    pool = multiprocessing.Pool(processes=2)
-    pool.apply_async(run_tests(tmpdir, monkeypatch))
-
-def run_tests(tmpdir, monkeypatch):
-    run_watch(tmpdir, monkeypatch)
-    move_cards(tmpdir, monkeypatch)
-
-def run_watch(tmpdir, monkeypatch):
-    print 'run_watch is running',str(datetime.datetime.now())
-    print 'run_watch is on:', multiprocessing.current_process().pid
-    def mock_crawl_folder():
-        assert 0
-    time.sleep(15)
-    assert 0
-    #monkeypatch.setattr(sift_encode, 'crawl_folder', mock_crawl_folder)
-    #sift_encode.watch(str(tmpdir))
-    
-def move_cards(tmpdir, monkeypatch):
-    print 'move_cards is running', str(datetime.datetime.now())
-    print 'move_cards  is on:', multiprocessing.current_process().pid
-    time.sleep(15)
-    test_card_dir = os.path.join(str(tmpdir),'test_card' + str(datetime.datetime.now()))
-    assert 0
-    shutil.copytree('test_card', test_card_dir)
-    time.sleep(15)
-    test_card_dir = os.path.join(str(tmpdir),'test_card' + str(datetime.datetime.now()))
-    shutil.copytree('test_card_A', test_card_dir)
-    time.sleep(15)
-    assert 0
+    before = make_folders(tmpdir)
+    after = make_folders(tmpdir)
+    assert before != after
